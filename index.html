@@ -465,11 +465,11 @@ a:hover { color: var(--accent); }
 .process-nav {
   position: sticky;
   top: 0;
-  height: auto;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   padding-right: var(--space-12);
-  padding-top: 30vh;
 }
 
 .process-nav-list {
@@ -923,8 +923,41 @@ a:hover { color: var(--accent); }
 
 .team-org-node:hover {
   border-color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(255, 212, 0, 0.08);
+  transform: translateY(-4px);
+  box-shadow: 0 0 24px rgba(255, 212, 0, 0.1);
+}
+
+/* Subtle idle float */
+@keyframes nodeFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.team-org-node {
+  animation: nodeFloat 4s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.team-org.is-visible .team-org-node {
+  animation-play-state: running;
+}
+
+/* Stagger the float so nodes drift at different rates */
+.team-org-tier:first-child .team-org-node:nth-child(1) { animation-delay: 0s; animation-duration: 4.2s; }
+.team-org-tier:first-child .team-org-node:nth-child(2) { animation-delay: 0.6s; animation-duration: 3.8s; }
+.team-org-tier:first-child .team-org-node:nth-child(3) { animation-delay: 1.2s; animation-duration: 4.5s; }
+.team-org-tier:nth-child(3) .team-org-node:nth-child(1) { animation-delay: 0.3s; animation-duration: 4.4s; }
+.team-org-tier:nth-child(3) .team-org-node:nth-child(2) { animation-delay: 0.9s; animation-duration: 3.6s; }
+.team-org-tier:nth-child(3) .team-org-node:nth-child(3) { animation-delay: 1.5s; animation-duration: 4.1s; }
+
+/* Connector pulse */
+@keyframes connectorPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.team-org.is-visible .team-org-connector::after {
+  animation: connectorPulse 2.5s ease-in-out infinite;
 }
 
 /* Orange pip at top of branched nodes */
@@ -2004,7 +2037,7 @@ a:hover { color: var(--accent); }
       <!-- Card 1: Salesforce -->
       <div class="portfolio-card" data-project="0" onclick="openLightbox(0)">
         <div class="portfolio-card-image">
-          <div class="placeholder-gradient" style="background: linear-gradient(135deg, #00a1e0 0%, #032d60 100%);"></div>
+          <img src="salesforce/Screenshot%202026-03-20%20at%205.09.50%E2%80%AFPM.png" alt="Salesforce Keynote" style="width:100%;height:100%;object-fit:cover;">
           <div class="portfolio-card-overlay">
             <p class="portfolio-card-client">Client: Salesforce</p>
             <p class="portfolio-card-name">Executive Keynote Suite</p>
@@ -2052,7 +2085,7 @@ a:hover { color: var(--accent); }
       <!-- Card 5: Microsoft -->
       <div class="portfolio-card" data-project="4" onclick="openLightbox(4)">
         <div class="portfolio-card-image">
-          <div class="placeholder-gradient" style="background: linear-gradient(135deg, #107c10 0%, #0078d4 100%);"></div>
+          <img src="microsoft/Screenshot%202026-03-20%20at%2011.55.46%E2%80%AFPM.png" alt="Microsoft Executive Comms" style="width:100%;height:100%;object-fit:cover;">
           <div class="portfolio-card-overlay">
             <p class="portfolio-card-client">Client: Microsoft</p>
             <p class="portfolio-card-name">Executive Communications</p>
@@ -2192,9 +2225,13 @@ const PROJECTS = [
     desc: 'Long-running engagement supporting Microsoft executive communications across product launches, earnings narratives, and internal leadership presentations. Deep understanding of enterprise storytelling at scale.',
     tags: ['Enterprise', 'Ongoing', 'Executive Comms', 'Product Marketing'],
     slides: [
-      { gradient: 'linear-gradient(135deg, #107c10 0%, #0078d4 100%)', label: 'Microsoft Slide 1' },
-      { gradient: 'linear-gradient(135deg, #0078d4 0%, #107c10 100%)', label: 'Microsoft Slide 2' },
-      { gradient: 'linear-gradient(160deg, #5c2d91 0%, #0078d4 100%)', label: 'Microsoft Slide 3' },
+      { image: 'microsoft/Screenshot 2026-03-20 at 11.55.46\u202FPM.png', label: 'Microsoft Slide 1' },
+      { image: 'microsoft/Screenshot 2026-03-20 at 11.55.56\u202FPM.png', label: 'Microsoft Slide 2' },
+      { image: 'microsoft/Screenshot 2026-03-20 at 11.56.08\u202FPM.png', label: 'Microsoft Slide 3' },
+      { image: 'microsoft/Screenshot 2026-03-21 at 12.00.23\u202FAM.png', label: 'Microsoft Slide 4' },
+      { image: 'microsoft/Screenshot 2026-03-21 at 12.01.02\u202FAM.png', label: 'Microsoft Slide 5' },
+      { image: 'microsoft/Screenshot 2026-03-21 at 12.01.21\u202FAM.png', label: 'Microsoft Slide 6' },
+      { image: 'microsoft/Screenshot 2026-03-21 at 12.01.45\u202FAM.png', label: 'Microsoft Slide 7' },
     ]
   },
   {
@@ -2290,6 +2327,16 @@ gsap.to('.brief-deliverables li', {
   stagger: 0.1,
   ease: 'power3.out',
 });
+
+// Team org float activation
+(function() {
+  const org = document.querySelector('.team-org');
+  if (!org) return;
+  const obs = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) org.classList.add('is-visible');
+  }, { threshold: 0.3 });
+  obs.observe(org);
+})();
 
 // Process sticky-scroll with IntersectionObserver
 (function initProcessStickyScroll() {
