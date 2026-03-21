@@ -468,9 +468,9 @@ a:hover { color: var(--accent); }
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding-right: var(--space-12);
-  padding-top: var(--space-8);
+  padding-top: calc((60vh - 200px) / 2);
 }
 
 .process-nav-list {
@@ -680,15 +680,40 @@ a:hover { color: var(--accent); }
   position: relative;
 }
 
-/* Connecting line behind the grid */
+/* Connecting line behind the grid — static track */
 .process-summary-grid::before {
   content: '';
   position: absolute;
   top: 32px;
   left: 8%;
   right: 8%;
-  height: 1px;
-  background: rgba(255, 212, 0, 0.2);
+  height: 2px;
+  background: rgba(255, 212, 0, 0.1);
+}
+
+/* Animated progress line */
+.process-summary-grid::after {
+  content: '';
+  position: absolute;
+  top: 31px;
+  left: 8%;
+  right: 8%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent));
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: none;
+  box-shadow: 0 0 12px rgba(255, 212, 0, 0.5), 0 0 24px rgba(255, 212, 0, 0.2);
+}
+
+.process-summary-grid.is-animating::after {
+  animation: progressSweep 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes progressSweep {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
 }
 
 .process-summary-card {
@@ -702,7 +727,7 @@ a:hover { color: var(--accent); }
   height: 64px;
   border-radius: 50%;
   background: #1a1a1a;
-  border: 1px solid rgba(255, 212, 0, 0.25);
+  border: 2px solid rgba(255, 212, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -710,7 +735,15 @@ a:hover { color: var(--accent); }
   font-family: var(--font-sans);
   font-size: var(--text-lg);
   font-weight: var(--weight-bold);
+  color: rgba(255, 212, 0, 0.3);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.process-summary-card-num.is-lit {
+  border-color: var(--accent);
   color: var(--accent);
+  box-shadow: 0 0 20px rgba(255, 212, 0, 0.3), 0 0 40px rgba(255, 212, 0, 0.1);
+  transform: scale(1.1);
 }
 
 .process-summary-card-title {
@@ -719,6 +752,12 @@ a:hover { color: var(--accent); }
   font-size: var(--text-base);
   color: #f0ece4;
   line-height: var(--leading-tight);
+  opacity: 0.4;
+  transition: opacity 0.5s ease;
+}
+
+.process-summary-card-title.is-lit {
+  opacity: 1;
 }
 
 /* — Responsive — */
@@ -802,12 +841,12 @@ a:hover { color: var(--accent); }
 .team-org {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .team-org-tier {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--space-6);
   position: relative;
   padding-top: 16px;
@@ -1015,7 +1054,7 @@ a:hover { color: var(--accent); }
 
 /* Override dark-theme text for light background */
 .section-platform .section-preheading {
-  color: var(--accent);
+  color: #B8860B;
 }
 .section-platform .section-heading {
   color: var(--warm-dark);
@@ -1062,7 +1101,7 @@ a:hover { color: var(--accent); }
   justify-content: center;
   overflow: hidden;
   position: relative;
-  margin-top: 18rem;
+  margin-top: 26rem;
 }
 
 .platform-video-label {
@@ -1111,20 +1150,32 @@ a:hover { color: var(--accent); }
   background: rgba(10, 9, 8, 0.04);
   border-radius: var(--radius-lg);
   border: 1px solid rgba(10, 9, 8, 0.06);
+  box-shadow: 0 4px 20px rgba(10, 9, 8, 0.06), 0 8px 32px rgba(10, 9, 8, 0.04);
+  animation: platformFloat 4s ease-in-out infinite;
   transition: transform var(--duration-normal) var(--ease-smooth),
               box-shadow var(--duration-normal) var(--ease-smooth);
 }
 
+.platform-feature:nth-child(2) { animation-delay: 0.5s; }
+.platform-feature:nth-child(3) { animation-delay: 1s; }
+.platform-feature:nth-child(4) { animation-delay: 1.5s; }
+
+@keyframes platformFloat {
+  0%, 100% { transform: translateY(0); box-shadow: 0 4px 20px rgba(10, 9, 8, 0.06), 0 8px 32px rgba(10, 9, 8, 0.04); }
+  50% { transform: translateY(-8px); box-shadow: 0 12px 32px rgba(10, 9, 8, 0.1), 0 20px 48px rgba(10, 9, 8, 0.06); }
+}
+
 .platform-feature:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(10, 9, 8, 0.08);
+  animation-play-state: paused;
+  transform: translateY(-10px);
+  box-shadow: 0 16px 40px rgba(10, 9, 8, 0.12), 0 24px 56px rgba(10, 9, 8, 0.08);
 }
 
 .platform-feature-icon {
   width: 40px;
   height: 40px;
   border-radius: var(--radius-md);
-  background: var(--accent-dim);
+  background: rgba(184, 134, 11, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1134,7 +1185,7 @@ a:hover { color: var(--accent); }
 .platform-feature-icon svg {
   width: 20px;
   height: 20px;
-  stroke: var(--accent);
+  stroke: #B8860B;
   fill: none;
   stroke-width: 2;
   stroke-linecap: round;
@@ -1488,7 +1539,7 @@ a:hover { color: var(--accent); }
 }
 
 .footer-logo-sketchdeck {
-  height: 40px;
+  height: 60px;
 }
 
 .footer-logo-simplicity {
@@ -2271,26 +2322,33 @@ gsap.to('.brief-deliverables li', {
     });
   });
 
-  // Animate summary cards on scroll into view
+  // Animate summary cards with progress sweep
   const summarySection = document.querySelector('.process-summary-section');
   if (summarySection) {
+    const summaryGrid = summarySection.querySelector('.process-summary-grid');
     const summaryObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const cards = summarySection.querySelectorAll('.process-summary-card');
-          cards.forEach((card, i) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
+          const nums = summarySection.querySelectorAll('.process-summary-card-num');
+          const titles = summarySection.querySelectorAll('.process-summary-card-title');
+
+          // Start progress line sweep
+          summaryGrid.classList.add('is-animating');
+
+          // Light up each circle sequentially as the line reaches it
+          nums.forEach((num, i) => {
+            const delay = (i / (nums.length - 1)) * 2000;
             setTimeout(() => {
-              card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-              card.style.opacity = '1';
-              card.style.transform = 'translateY(0)';
-            }, i * 100);
+              num.classList.add('is-lit');
+              if (titles[i]) titles[i].classList.add('is-lit');
+            }, delay);
           });
+
           summaryObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.3 });
     summaryObserver.observe(summarySection);
   }
 })();
