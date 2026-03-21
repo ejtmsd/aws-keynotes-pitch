@@ -543,6 +543,10 @@ a:hover { color: var(--accent); }
   position: relative;
 }
 
+.process-step:first-child {
+  margin-top: 20vh;
+}
+
 .process-step::before {
   content: '';
   position: absolute;
@@ -2062,7 +2066,7 @@ a:hover { color: var(--accent); }
       <!-- Card 2: Okta -->
       <div class="portfolio-card" data-project="1" onclick="openLightbox(1)">
         <div class="portfolio-card-image">
-          <div class="placeholder-gradient" style="background: linear-gradient(135deg, #00297a 0%, #191919 100%);"></div>
+          <img src="okta/Screenshot%202026-03-21%20at%2012.19.01%E2%80%AFAM.png" alt="Okta Oktane Keynote" style="width:100%;height:100%;object-fit:cover;">
           <div class="portfolio-card-overlay">
             <p class="portfolio-card-client">Client: Okta</p>
             <p class="portfolio-card-name">Oktane Main Stage</p>
@@ -2207,9 +2211,15 @@ const PROJECTS = [
     desc: 'Main stage keynote design for Okta\'s annual Oktane conference. High-energy visual storytelling with product demos woven into the narrative arc. Designed for speaker confidence and audience impact.',
     tags: ['Keynote', 'Conference', 'Product Launch', 'SaaS'],
     slides: [
-      { gradient: 'linear-gradient(135deg, #00297a 0%, #191919 100%)', label: 'Okta Keynote Slide 1' },
-      { gradient: 'linear-gradient(135deg, #191919 0%, #00297a 100%)', label: 'Okta Keynote Slide 2' },
-      { gradient: 'linear-gradient(160deg, #00297a 0%, #3d3d3d 100%)', label: 'Okta Keynote Slide 3' },
+      { image: 'okta/Screenshot 2026-03-21 at 12.19.01\u202FAM.png', label: 'Okta Keynote Slide 1' },
+      { image: 'okta/Screenshot 2026-03-21 at 12.19.24\u202FAM.png', label: 'Okta Keynote Slide 2' },
+      { image: 'okta/Screenshot 2026-03-21 at 12.19.35\u202FAM.png', label: 'Okta Keynote Slide 3' },
+      { image: 'okta/Screenshot 2026-03-21 at 12.19.51\u202FAM.png', label: 'Okta Keynote Slide 4' },
+      { image: 'okta/Screenshot 2026-03-21 at 12.21.04\u202FAM.png', label: 'Okta Keynote Slide 5' },
+      { image: 'okta/Screenshot 2026-03-21 at 12.21.13\u202FAM.png', label: 'Okta Keynote Slide 6' },
+      { image: 'okta/Screenshot 2026-03-21 at 12.21.51\u202FAM.png', label: 'Okta Keynote Slide 7' },
+      { image: 'okta/Screenshot 2026-03-21 at 12.22.17\u202FAM.png', label: 'Okta Keynote Slide 8' },
+      { image: 'okta/Screenshot 2026-03-21 at 12.22.48\u202FAM.png', label: 'Okta Keynote Slide 9' },
     ]
   },
   {
