@@ -1318,6 +1318,19 @@ a:hover { color: var(--accent); }
   position: relative;
 }
 
+.portfolio-card-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  transition: background var(--duration-normal) var(--ease-smooth);
+  z-index: 1;
+}
+
+.portfolio-card:hover .portfolio-card-image::after {
+  background: rgba(0, 0, 0, 0.8);
+}
+
 .portfolio-card-image .placeholder-gradient {
   width: 100%;
   height: 100%;
@@ -1329,7 +1342,7 @@ a:hover { color: var(--accent); }
   left: 0;
   right: 0;
   padding: var(--space-8) var(--space-6);
-  background: linear-gradient(to top, rgba(10, 9, 8, 0.95) 0%, rgba(10, 9, 8, 0.7) 60%, transparent 100%);
+  z-index: 2;
   transform: translateY(40px);
   opacity: 0;
   transition: all var(--duration-normal) var(--ease-out);
