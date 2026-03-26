@@ -1688,9 +1688,64 @@ a:hover { color: var(--accent); }
   margin-bottom: var(--space-3);
 }
 
+/* Slide count slider */
+.pricing-slider-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.pricing-slider-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+  white-space: nowrap;
+}
+
+.pricing-slider-row input[type=range] {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.12);
+  outline: none;
+  cursor: pointer;
+}
+
+.pricing-slider-row input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--24sa-black);
+  cursor: pointer;
+}
+
+.pricing-slide-count {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-regular);
+  color: var(--24sa-black);
+  min-width: 44px;
+  text-align: right;
+}
+
+.pricing-anchor-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
+  margin-top: var(--space-1);
+  opacity: 0.7;
+}
+
 .breakdown-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .breakdown-table th {
@@ -1709,6 +1764,7 @@ a:hover { color: var(--accent); }
   text-align: center;
 }
 
+.breakdown-table th.col-rate,
 .breakdown-table th.col-amount {
   text-align: right;
 }
@@ -1725,6 +1781,12 @@ a:hover { color: var(--accent); }
   text-align: center;
   color: var(--muted-text-light);
   font-size: var(--text-xs);
+}
+
+.breakdown-table .rate {
+  text-align: right;
+  font-size: var(--text-xs);
+  color: var(--muted-text-light);
 }
 
 .breakdown-table .amount {
@@ -2495,16 +2557,29 @@ a:hover { color: var(--accent); }
     <p class="section-preheading reveal">Investment</p>
     <h2 class="section-heading reveal">Pricing Estimate</h2>
 
+    <div class="pricing-card reveal">
+      <p class="pricing-card-label">Slide count</p>
+      <div class="pricing-slider-row">
+        <span class="pricing-slider-label">Slides</span>
+        <input type="range" min="20" max="45" value="20" step="1" id="pricingSlider">
+        <span class="pricing-slide-count" id="pricingSlideDisplay">20</span>
+      </div>
+      <div class="pricing-anchor-labels">
+        <span>20 slides &mdash; $9,250</span>
+        <span>45 slides &mdash; $20,700</span>
+      </div>
+    </div>
+
     <div class="pricing-metrics reveal">
       <div class="pricing-metric">
         <p class="pricing-metric-label">Per deck</p>
-        <p class="pricing-metric-value">$9,250</p>
-        <p class="pricing-metric-sub">Up to 20 slides</p>
+        <p class="pricing-metric-value" id="pricingPerDeck">$9,250</p>
+        <p class="pricing-metric-sub" id="pricingTotalHours">55.75 total hours</p>
       </div>
       <div class="pricing-metric">
-        <p class="pricing-metric-label">Quarterly package</p>
-        <p class="pricing-metric-value">$37,000</p>
-        <p class="pricing-metric-sub">4 decks / quarter</p>
+        <p class="pricing-metric-label">Quarterly (4 decks)</p>
+        <p class="pricing-metric-value" id="pricingQuarterly">$37,000</p>
+        <p class="pricing-metric-sub">billed per deck</p>
       </div>
     </div>
 
@@ -2515,34 +2590,40 @@ a:hover { color: var(--accent); }
           <tr>
             <th>Role</th>
             <th class="col-hours">Hours</th>
+            <th class="col-rate">Rate</th>
             <th class="col-amount">Amount</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Design</td>
-            <td class="hours">34 hr</td>
-            <td class="amount">$5,950</td>
+            <td class="hours" id="pricingHDesign">34</td>
+            <td class="rate">$175/hr</td>
+            <td class="amount" id="pricingADesign">$5,950</td>
           </tr>
           <tr>
             <td>Project management</td>
-            <td class="hours">9 hr</td>
-            <td class="amount">$1,575</td>
+            <td class="hours" id="pricingHPm">9</td>
+            <td class="rate">$175/hr</td>
+            <td class="amount" id="pricingAPm">$1,575</td>
           </tr>
           <tr>
             <td>Quality control</td>
-            <td class="hours">8.25 hr</td>
-            <td class="amount">$825</td>
+            <td class="hours" id="pricingHQc">8.25</td>
+            <td class="rate">$100/hr</td>
+            <td class="amount" id="pricingAQc">$825</td>
           </tr>
           <tr>
             <td>Design direction</td>
-            <td class="hours">4.5 hr</td>
-            <td class="amount">$900</td>
+            <td class="hours" id="pricingHDd">4.5</td>
+            <td class="rate">$200/hr</td>
+            <td class="amount" id="pricingADd">$900</td>
           </tr>
           <tr class="total-row">
             <td>Total</td>
-            <td class="hours">55.75 hr</td>
-            <td class="amount">$9,250</td>
+            <td class="hours" id="pricingHTotal">55.75</td>
+            <td></td>
+            <td class="amount" id="pricingATotal">$9,250</td>
           </tr>
         </tbody>
       </table>
@@ -2551,7 +2632,7 @@ a:hover { color: var(--accent); }
     <div class="pricing-card reveal">
       <p class="pricing-card-label">What's included</p>
       <ul class="inclusions-list">
-        <li>Up to 20 slides per deck</li>
+        <li id="pricingIncSlides">Up to 20 slides per deck</li>
         <li>Up to 4 rounds of edits per deck</li>
         <li>Up to 4 meeting touchpoints per deck</li>
         <li>Motion and animation not included</li>
@@ -2992,6 +3073,61 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+
+// ====== PRICING CALCULATOR ======
+(function() {
+  var RATES = { design: 175, pm: 175, qc: 100, dd: 200 };
+  var AT20  = { design: 34,  pm: 9,   qc: 8.25, dd: 4.5 };
+  var AT45  = { design: 90,  pm: 10,  qc: 12,   dd: 10  };
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+  function fmtHours(h) {
+    var r = Math.round(h * 4) / 4;
+    return r % 1 === 0 ? r.toString() : r.toFixed(2).replace(/0+$/, '');
+  }
+
+  function update(slides) {
+    var t = (slides - 20) / 25;
+    var h = {
+      design: lerp(AT20.design, AT45.design, t),
+      pm:     lerp(AT20.pm,     AT45.pm,     t),
+      qc:     lerp(AT20.qc,     AT45.qc,     t),
+      dd:     lerp(AT20.dd,     AT45.dd,     t)
+    };
+    var a = {
+      design: h.design * RATES.design,
+      pm:     h.pm     * RATES.pm,
+      qc:     h.qc     * RATES.qc,
+      dd:     h.dd     * RATES.dd
+    };
+    var totalHours = h.design + h.pm + h.qc + h.dd;
+    var totalAmt   = a.design + a.pm + a.qc + a.dd;
+
+    document.getElementById('pricingSlideDisplay').textContent = slides;
+    document.getElementById('pricingHDesign').textContent      = fmtHours(h.design);
+    document.getElementById('pricingHPm').textContent          = fmtHours(h.pm);
+    document.getElementById('pricingHQc').textContent          = fmtHours(h.qc);
+    document.getElementById('pricingHDd').textContent          = fmtHours(h.dd);
+    document.getElementById('pricingHTotal').textContent       = fmtHours(totalHours);
+    document.getElementById('pricingADesign').textContent      = fmt(a.design);
+    document.getElementById('pricingAPm').textContent          = fmt(a.pm);
+    document.getElementById('pricingAQc').textContent          = fmt(a.qc);
+    document.getElementById('pricingADd').textContent          = fmt(a.dd);
+    document.getElementById('pricingATotal').textContent       = fmt(totalAmt);
+    document.getElementById('pricingPerDeck').textContent      = fmt(totalAmt);
+    document.getElementById('pricingQuarterly').textContent    = fmt(totalAmt * 4);
+    document.getElementById('pricingTotalHours').textContent   = fmtHours(totalHours) + ' total hours';
+    document.getElementById('pricingIncSlides').textContent    = 'Up to ' + slides + ' slides per deck';
+  }
+
+  var slider = document.getElementById('pricingSlider');
+  if (slider) {
+    slider.addEventListener('input', function(e) { update(+e.target.value); });
+    update(20);
+  }
+})();
 
 
 // ====== YOUTUBE LAZY LOAD (IntersectionObserver) ======
